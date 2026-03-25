@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O-Marketiks — Your Vision. Our Strategy.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black:   #0a0a0b;
+      --dark:    #111114;
+      --card:    #16161a;
+      --border:  #2a2a32;
+      --gold:    #c9a84c;
+      --gold2:   #e8c96a;
+      --cream:   #f5f0e8;
+      --muted:   #6e6e7a;
+      --white:   #ffffff;
+      --serif:   'Cormorant Garamond', Georgia, serif;
+      --sans:    'Syne', sans-serif;
+      --body:    'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--body);
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ──────────────────────────── */
+    #cursor {
+      position: fixed; z-index: 9999;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, background .2s;
+    }
+    #cursor-ring {
+      position: fixed; z-index: 9998;
+      width: 38px; height: 38px;
+      border: 1px solid rgba(201,168,76,.5);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%,-50%);
+      transition: transform .12s ease, width .2s, height .2s, opacity .3s;
+    }
+    body:hover #cursor-ring { opacity: 1; }
+
+    /* ── NOISE OVERLAY ───────────────────── */
+    body::before {
+      content:'';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: .5;
+    }
+
+    /* ── NAV ─────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.6rem 3.5rem;
+      transition: background .4s, padding .4s, backdrop-filter .4s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,11,.85);
+      backdrop-filter: blur(18px);
+      padding: 1rem 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--sans);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width .3s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      font-family: var(--sans);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: .65rem 1.6rem;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background .25s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--gold2); transform: translateY(-1px); }
+
+    /* ── HERO ────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3.5rem 6rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 70% 40%, rgba(201,168,76,.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(201,168,76,.06) 0%, transparent 60%),
+        var(--black);
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+    }
+    .hero-overline {
+      font-family: var(--sans);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+      position: relative; z-index: 1;
+      opacity: 0;
+      animation: fadeUp .8s ease forwards .3s;
+    }
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 8vw, 8.5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -.01em;
+      position: relative; z-index: 1;
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeUp .9s ease forwards .5s;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-family: var(--body);
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-top: 2rem;
+      position: relative; z-index: 1;
+      opacity: 0;
+      animation: fadeUp .9s ease forwards .75s;
+    }
+    .hero-actions {
+      display: flex; gap: 1.2rem; align-items: center;
+      margin-top: 3rem;
+      position: relative; z-index: 1;
+      opacity: 0;
+      animation: fadeUp .9s ease forwards 1s;
+    }
+    .btn-primary {
+      font-family: var(--sans);
+      font-size: .75rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--black); background: var(--gold);
+      padding: 1rem 2.4rem;
+      border: none; border-radius: 2px;
+      text-decoration: none;
+      cursor: none;
+      transition: background .25s, transform .2s, box-shadow .25s;
+    }
+    .btn-primary:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(201,168,76,.25);
+    }
+    .btn-ghost {
+      font-family: var(--sans);
+      font-size: .75rem; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex; align-items: center; gap: .5rem;
+      cursor: none;
+      transition: color .25s;
+    }
+    .btn-ghost:hover { color: var(--white); }
+    .btn-ghost::after { content: '↓'; font-size: 1rem; }
+    .hero-scroll-indicator {
+      position: absolute; right: 3.5rem; bottom: 6rem;
+      z-index: 1;
+      writing-mode: vertical-rl;
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: .8rem;
+      opacity: 0;
+      animation: fadeIn .9s ease forwards 1.3s;
+    }
+    .hero-scroll-indicator::before {
+      content: '';
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+    }
+    .hero-stat-bar {
+      position: absolute; left: 3.5rem; bottom: 6rem;
+      z-index: 1;
+      display: flex; gap: 3rem;
+      opacity: 0;
+      animation: fadeUp .9s ease forwards 1.1s;
+    }
+    .hero-stat { text-align: left; }
+    .hero-stat-num {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: .35rem;
+    }
+
+    /* ── MARQUEE ──────────────────────────── */
+    .marquee-section {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      padding: 1.1rem 0;
+      background: var(--dark);
+    }
+    .marquee-track {
+      display: flex;
+      animation: marquee 28s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      font-family: var(--sans);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 3rem;
+      white-space: nowrap;
+    }
+    .marquee-dot {
+      color: var(--gold);
+      margin: 0 .4rem;
+    }
+
+    /* ── SECTION WRAPPER ─────────────────── */
+    section { position: relative; z-index: 1; }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 3.5rem; }
+    .section-tag {
+      font-family: var(--sans);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: .8rem;
+    }
+    .section-tag::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--gold);
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 4vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -.01em;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ── ABOUT ───────────────────────────── */
+    #about {
+      padding: 10rem 0;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .about-text-block { }
+    .about-body {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: rgba(255,255,255,.65);
+      margin-top: 2rem;
+    }
+    .about-tagline {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--gold);
+      margin-top: 2.5rem;
+      border-left: 2px solid var(--gold);
+      padding-left: 1.5rem;
+      line-height: 1.4;
+    }
+    .about-visual {
+      position: relative;
+      height: 480px;
+    }
+    .about-card {
+      position: absolute;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.4rem;
+    }
+    .about-card-main {
+      inset: 0 0 80px 0;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      background: linear-gradient(135deg, #16161a 0%, #1e1e26 100%);
+      overflow: hidden;
+    }
+    .about-card-main::before {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,.15) 0%, transparent 70%);
+    }
+    .about-card-label {
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .8rem;
+    }
+    .about-card-value {
+      font-family: var(--serif);
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+    }
+    .about-card-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-top: .4rem;
+    }
+    .about-card-float {
+      width: 200px;
+      right: -24px; bottom: 20px;
+      background: var(--gold);
+      color: var(--black);
+      text-align: center;
+    }
+    .about-card-float .val {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+    .about-card-float .lbl {
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-top: .2rem;
+    }
+
+    /* ── SERVICES ────────────────────────── */
+    #services {
+      padding: 10rem 0;
+      background: var(--dark);
+    }
+    .services-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 5rem;
+    }
+    .services-desc {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,.6);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .service-card {
+      background: var(--dark);
+      padding: 2.8rem 2.4rem;
+      transition: background .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,.06) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .service-card:hover { background: #1a1a20; }
+    .service-card:hover::before { opacity: 1; }
+    .service-num {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 600;
+      color: rgba(201,168,76,.15);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      transition: color .3s;
+    }
+    .service-card:hover .service-num { color: rgba(201,168,76,.35); }
+    .service-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .service-name {
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      margin-bottom: .8rem;
+    }
+    .service-desc {
+      font-size: .88rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    .service-arrow {
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-top: 1.5rem;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity .3s, transform .3s;
+    }
+    .service-card:hover .service-arrow { opacity: 1; transform: translateX(0); }
+
+    /* ── TEAM ────────────────────────────── */
+    #team {
+      padding: 10rem 0;
+    }
+    .team-header { margin-bottom: 4rem; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .team-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.4rem;
+      transition: border-color .3s, transform .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .team-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .team-card:hover { border-color: rgba(201,168,76,.3); transform: translateY(-4px); }
+    .team-card:hover::after { transform: scaleX(1); }
+    .team-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), #8b6914);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 1.5rem;
+      flex-shrink: 0;
+    }
+    .team-name {
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+      margin-bottom: .3rem;
+    }
+    .team-role {
+      font-family: var(--sans);
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+    .team-bio {
+      font-size: .85rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    .team-exp {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: .3rem .8rem;
+      border-radius: 2px;
+    }
+
+    /* ── CLIENTS ─────────────────────────── */
+    #clients {
+      padding: 10rem 0;
+      background: var(--dark);
+    }
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 4rem;
+    }
+    .client-cell {
+      background: var(--dark);
+      padding: 2rem 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      font-family: var(--sans);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--muted);
+      transition: background .3s, color .3s;
+      min-height: 80px;
+    }
+    .client-cell:hover { background: var(--card); color: var(--white); }
+    .clients-local {
+      margin-top: 4rem;
+    }
+    .clients-local-title {
+      font-family: var(--sans);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .clients-local-grid {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .client-badge {
+      font-family: var(--sans);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: .55rem 1.2rem;
+      border-radius: 100px;
+      transition: border-color .3s, color .3s;
+    }
+    .client-badge:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── NUMBERS ─────────────────────────── */
+    #numbers {
+      padding: 8rem 0;
+      background: var(--gold);
+    }
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .number-item {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-right: 1px solid rgba(0,0,0,.15);
+    }
+    .number-item:last-child { border-right: none; }
+    .number-val {
+      font-family: var(--serif);
+      font-size: 4rem;
+      font-weight: 600;
+      color: var(--black);
+      line-height: 1;
+    }
+    .number-lbl {
+      font-family: var(--sans);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.55);
+      margin-top: .6rem;
+    }
+
+    /* ── EVENTS ──────────────────────────── */
+    #events {
+      padding: 10rem 0;
+    }
+    .events-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+    .event-main {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .event-main::before {
+      content: '';
+      position: absolute; top: -100px; right: -100px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,.1) 0%, transparent 70%);
+    }
+    .event-badge {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: .35rem .9rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .event-title {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+    .event-title em { font-style: italic; color: var(--gold); }
+    .event-desc {
+      font-size: .92rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+    .event-highlights {
+      margin-top: 2rem;
+      display: flex; flex-direction: column; gap: .8rem;
+    }
+    .event-hl {
+      display: flex; align-items: flex-start; gap: 1rem;
+      font-size: .88rem;
+      color: rgba(255,255,255,.7);
+    }
+    .event-hl::before {
+      content: '✦';
+      color: var(--gold);
+      flex-shrink: 0;
+      font-size: .7rem;
+      margin-top: .15rem;
+    }
+    .event-side {
+      display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .event-side-card {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.4rem;
+    }
+    .event-side-label {
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .influencer-list {
+      display: flex; flex-direction: column; gap: .5rem;
+    }
+    .influencer-item {
+      font-size: .88rem;
+      color: rgba(255,255,255,.65);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .influencer-item::before { content: '→'; color: var(--gold); font-size: .75rem; }
+
+    /* ── CONTACT ─────────────────────────── */
+    #contact {
+      padding: 10rem 0;
+      background: var(--dark);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .contact-left { }
+    .contact-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,.6);
+      margin-top: 1.5rem;
+    }
+    .contact-info {
+      margin-top: 3rem;
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .contact-item {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+    .contact-item-icon {
+      width: 36px; height: 36px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+    .contact-form {
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+    .form-label {
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-input, .form-textarea {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: .9rem 1.2rem;
+      color: var(--white);
+      font-family: var(--body);
+      font-size: .9rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color .25s;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--gold); }
+    .form-textarea { resize: vertical; min-height: 120px; }
+    .form-submit {
+      font-family: var(--sans);
+      font-size: .75rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--black); background: var(--gold);
+      border: none; border-radius: 2px;
+      padding: 1.1rem 2.4rem;
+      cursor: none;
+      align-self: flex-start;
+      transition: background .25s, transform .2s, box-shadow .25s;
+    }
+    .form-submit:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(201,168,76,.25);
+    }
+
+    /* ── FOOTER ──────────────────────────── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 4rem 3.5rem 3rem;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand { }
+    .footer-logo {
+      font-family: var(--sans);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      color: var(--white);
+    }
+    .footer-logo span { color: var(--gold); }
+    .footer-tagline {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: .95rem;
+      color: var(--muted);
+      margin-top: .8rem;
+      line-height: 1.5;
+    }
+    .footer-col-title {
+      font-family: var(--sans);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+    .footer-links a {
+      font-size: .88rem;
+      color: rgba(255,255,255,.5);
+      text-decoration: none;
+      transition: color .25s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 3rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-size: .8rem;
+      color: var(--muted);
+    }
+    .footer-socials {
+      display: flex; gap: .8rem;
+    }
+    .social-link {
+      width: 34px; height: 34px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: border-color .3s, color .3s, background .3s;
+    }
+    .social-link:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(201,168,76,.08);
+    }
+
+    /* ── ANIMATIONS ──────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── MOBILE ──────────────────────────── */
+    @media (max-width: 1024px) {
+      nav { padding: 1.4rem 2rem; }
+      nav.scrolled { padding: .9rem 2rem; }
+      .nav-links { display: none; }
+      #hero { padding: 0 2rem 5rem; }
+      .hero-stat-bar { left: 2rem; }
+      .hero-scroll-indicator { right: 2rem; }
+      .section-inner { padding: 0 2rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-visual { height: 300px; margin-top: 2rem; }
+      .services-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .clients-grid { grid-template-columns: repeat(3, 1fr); }
+      .numbers-grid { grid-template-columns: 1fr 1fr; }
+      .events-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      footer { padding: 3rem 2rem; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    }
+    @media (max-width: 640px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+      .clients-grid { grid-template-columns: 1fr 1fr; }
+      .numbers-grid { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .hero-stat-bar { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">O<span>-</span>MARKETIKS</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#clients">Clients</a></li>
+      <li><a href="#events">Events</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Let's Talk</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-overline">Marketing Agency · UAE &amp; Global</div>
+    <h1 class="hero-headline">
+      Where <em>Strategy</em><br/>
+      Meets <em>Impact</em>
+    </h1>
+    <p class="hero-sub">
+      We craft customized marketing solutions that drive growth, engagement, and lasting impact for brands across Dubai and beyond.
+    </p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">Explore Our Work</a>
+      <a href="#about" class="btn-ghost">Discover Us</a>
+    </div>
+
+    <div class="hero-stat-bar">
+      <div class="hero-stat">
+        <div class="hero-stat-num">10+</div>
+        <div class="hero-stat-label">Years Avg. Experience</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">20+</div>
+        <div class="hero-stat-label">Global Clients</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">6</div>
+        <div class="hero-stat-label">Industry Experts</div>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">Scroll to explore</div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item">Digital Marketing <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Brand Identity <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Web &amp; App Development <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Events &amp; PR <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Social Media <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">SEM &amp; SEO <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Packaging Design <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Content Production <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Digital Marketing <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Brand Identity <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Web &amp; App Development <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Events &amp; PR <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Social Media <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">SEM &amp; SEO <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Packaging Design <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Content Production <span class="marquee-dot">✦</span></span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-text-block reveal">
+          <div class="section-tag">About O-Marketiks</div>
+          <h2 class="section-title">Strategic partners in your brand's <em>success</em></h2>
+          <p class="about-body">
+            With a deep understanding of the ever-evolving market landscape, we craft customized marketing solutions that drive growth, engagement, and lasting impact. Our team combines creativity, technology, and strategy to deliver powerful results.
+          </p>
+          <p class="about-body">
+            Our approach is simple: we listen, we innovate, and we execute with precision. Backed by years of experience across diverse industries, we leverage insights, trends, and cutting-edge tools to ensure your brand stands out.
+          </p>
+          <blockquote class="about-tagline">
+            "Your vision. Our strategy.<br/>Limitless possibilities."
+          </blockquote>
+        </div>
+        <div class="about-visual reveal">
+          <div class="about-card about-card-main">
+            <div class="about-card-label">Agency Founded In</div>
+            <div class="about-card-value">Dubai, UAE</div>
+            <div class="about-card-desc">Serving brands locally &amp; globally</div>
+          </div>
+          <div class="about-card about-card-float">
+            <div class="val">13+</div>
+            <div class="lbl">Yrs of Expertise</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-inner">
+      <div class="services-header reveal">
+        <div>
+          <div class="section-tag">What We Do</div>
+          <h2 class="section-title">Full-spectrum <em>marketing</em> solutions</h2>
+        </div>
+        <p class="services-desc">
+          From digital marketing and branding to content production and strategic planning — we cover every touchpoint of your brand's journey.
+        </p>
+      </div>
+      <div class="services-grid reveal">
+        <div class="service-card">
+          <div class="service-num">01</div>
+          <div class="service-icon">🎯</div>
+          <div class="service-name">Digital Marketing</div>
+          <div class="service-desc">Data-driven campaigns across all digital channels — search, social, display, and beyond. Built for measurable results.</div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card">
+          <div class="service-num">02</div>
+          <div class="service-icon">✦</div>
+          <div class="service-name">Brand Identity</div>
+          <div class="service-desc">From logo design to full visual systems. We build brands that leave lasting impressions and communicate clearly.</div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card">
+          <div class="service-num">03</div>
+          <div class="service-icon">💻</div>
+          <div class="service-name">Website &amp; App Dev</div>
+          <div class="service-desc">Custom UI/UX, e-commerce platforms, mobile-responsive websites, and apps built for seamless user experiences.</div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card">
+          <div class="service-num">04</div>
+          <div class="service-icon">📱</div>
+          <div class="service-name">Social Media</div>
+          <div class="service-desc">Organic growth, content strategy, PR-led storytelling, and authority building across B2B and B2C markets.</div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card">
+          <div class="service-num">05</div>
+          <div class="service-icon">🎪</div>
+          <div class="service-name">Events &amp; PR</div>
+          <div class="service-desc">360° event launches, influencer campaigns, media relations, and brand amplification for maximum visibility.</div>
+          <div class="service-arrow">→</div>
+        </div>
+        <div class="service-card">
+          <div class="service-num">06</div>
+          <div class="service-icon">📦</div>
+          <div class="service-name">Packaging Design</div>
+          <div class="service-desc">Creative packaging that communicates brand values, stands out on shelves, and tells a compelling product story.</div>
+          <div class="service-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUMBERS -->
+  <section id="numbers">
+    <div class="section-inner" style="padding:0 3.5rem">
+      <div class="numbers-grid">
+        <div class="number-item">
+          <div class="number-val">13+</div>
+          <div class="number-lbl">Years Experience</div>
+        </div>
+        <div class="number-item">
+          <div class="number-val">20+</div>
+          <div class="number-lbl">Global Clients</div>
+        </div>
+        <div class="number-item">
+          <div class="number-val">6</div>
+          <div class="number-lbl">Industry Experts</div>
+        </div>
+        <div class="number-item">
+          <div class="number-val">UAE</div>
+          <div class="number-lbl">Base of Operations</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="section-inner">
+      <div class="team-header reveal">
+        <div class="section-tag">The Minds Behind</div>
+        <h2 class="section-title">Meet our <em>experts</em></h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card reveal">
+          <div class="team-avatar">FA</div>
+          <div class="team-name">Fawad Ahmed</div>
+          <div class="team-role">Chief Operating Officer</div>
+          <p class="team-bio">Marketing leader specializing in Digital Marketing, Brand Development, Trade Marketing, and Corporate Communications across E-commerce, Manufacturing, and Pharma.</p>
+          <span class="team-exp">13+ Years</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">FB</div>
+          <div class="team-name">Farheen Badar</div>
+          <div class="team-role">Director, Marketing &amp; Comms</div>
+          <p class="team-bio">Pharmacist &amp; Executive MBA with expertise in product commercialization, sales, and brand strategy. Proven track record driving revenue and profit growth.</p>
+          <span class="team-exp">Senior Leader</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">FH</div>
+          <div class="team-name">Faiz Ul Haq</div>
+          <div class="team-role">Business Director</div>
+          <p class="team-bio">13 years of global experience across strategy, media, and operations — helping brands scale through data-driven storytelling and commercial thinking.</p>
+          <span class="team-exp">13+ Years</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">UD</div>
+          <div class="team-name">Uzair S. Dodhy</div>
+          <div class="team-role">Head of Business Development</div>
+          <p class="team-bio">Expert across Oil &amp; Gas, Healthcare, and Fintech sectors. Passionate about scaling businesses through digital marketing and strategic partnerships.</p>
+          <span class="team-exp">7+ Years</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">ZA</div>
+          <div class="team-name">Zahra Asif</div>
+          <div class="team-role">Head of Social Media</div>
+          <p class="team-bio">PR Strategist driving growth for UAE, US, Saudi, and Kuwait brands. Expert in organic lead generation, PR-led brand storytelling, and authority building.</p>
+          <span class="team-exp">5+ Years</span>
+        </div>
+        <div class="team-card reveal">
+          <div class="team-avatar">AI</div>
+          <div class="team-name">Abid Iqbal</div>
+          <div class="team-role">Advisor</div>
+          <p class="team-bio">Senior Sales Enablement &amp; Digital Transformation leader bridging Product, Sales, and Marketing across manufacturing, software, and SaaS.</p>
+          <span class="team-exp">10+ Years</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section id="clients">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-tag">Trusted By</div>
+        <h2 class="section-title">Brands we've <em>elevated</em></h2>
+      </div>
+      <div class="clients-grid reveal">
+        <div class="client-cell">Infectionwatch</div>
+        <div class="client-cell">NeuroCare</div>
+        <div class="client-cell">FrontDoor Fabulous</div>
+        <div class="client-cell">Deliciously Dates</div>
+        <div class="client-cell">Jatlee Corp.</div>
+        <div class="client-cell">HelloPetSpa</div>
+        <div class="client-cell">Book On The Bright Side</div>
+        <div class="client-cell">Nurtur</div>
+        <div class="client-cell">Club Vibora</div>
+        <div class="client-cell">SI Signs</div>
+      </div>
+      <div class="clients-local reveal">
+        <div class="clients-local-title">UAE / Regional Clients</div>
+        <div class="clients-local-grid">
+          <span class="client-badge">Chutney &amp; Roll — Dubai</span>
+          <span class="client-badge">Pet Dreamland UAE</span>
+          <span class="client-badge">Book Yacht Rental Dubai</span>
+          <span class="client-badge">Saima Jinnah Icon Mall</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="events">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-tag">Events &amp; PR</div>
+        <h2 class="section-title">360° launches that <em>ignite</em> brands</h2>
+      </div>
+      <div class="events-grid">
+        <div class="event-main reveal">
+          <span class="event-badge">Case Study · Dec 2025</span>
+          <h3 class="event-title"><em>Saima Jinnah</em> Icon Mall — Grand Launch</h3>
+          <p class="event-desc">Official PR &amp; Event Launch Partner for the grand opening of Saima Jinnah Icon Mall. We managed media relations, digital PR, and brand amplification to maximize public visibility for a 10-day festival.</p>
+          <div class="event-highlights">
+            <div class="event-hl">Mega &amp; micro influencer activations with celebrities</div>
+            <div class="event-hl">WinterFest Shopping Experience with festive brand activations</div>
+            <div class="event-hl">Grand Ribbon-Cutting Ceremony &amp; Exclusive Mall Tours</div>
+            <div class="event-hl">Live influencer &amp; host segments with on-ground coverage</div>
+            <div class="event-hl">Photo moments &amp; crowd engagement throughout the festival</div>
+          </div>
+        </div>
+        <div class="event-side">
+          <div class="event-side-card reveal">
+            <div class="event-side-label">Mega Influencers</div>
+            <div class="influencer-list">
+              <div class="influencer-item">Irfan Junejo</div>
+              <div class="influencer-item">Junaid Akram</div>
+              <div class="influencer-item">Ahmed Godil</div>
+              <div class="influencer-item">Hina Altaf</div>
+            </div>
+          </div>
+          <div class="event-side-card reveal">
+            <div class="event-side-label">Publications</div>
+            <div class="influencer-list">
+              <div class="influencer-item">Startup Pakistan</div>
+              <div class="influencer-item">ProPakistani</div>
+              <div class="influencer-item">Hello Tribune</div>
+            </div>
+          </div>
+          <div class="event-side-card reveal">
+            <div class="event-side-label">Micro Influencers</div>
+            <div class="influencer-list">
+              <div class="influencer-item">Ammar Zaidi</div>
+              <div class="influencer-item">Amna &amp; Anum</div>
+              <div class="influencer-item">Ayub Khosa</div>
+              <div class="influencer-item">Hina &amp; Arsalan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="contact-grid">
+        <div class="contact-left reveal">
+          <div class="section-tag">Get In Touch</div>
+          <h2 class="section-title">Let's build something <em>extraordinary</em></h2>
+          <p class="contact-body">
+            Whether you're a startup looking to establish your presence or an established brand aiming for the next level — we're ready to listen, innovate, and execute with precision.
+          </p>
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="contact-item-icon">📍</div>
+              <span>Dubai, United Arab Emirates</span>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">✉️</div>
+              <span>hello@omarketiks.com</span>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">🌐</div>
+              <span>UAE · Pakistan · Global</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form reveal">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-input" placeholder="John" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-input" placeholder="Doe" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" placeholder="john@company.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Company</label>
+            <input type="text" class="form-input" placeholder="Your Company Name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">How can we help?</label>
+            <textarea class="form-textarea" placeholder="Tell us about your brand and goals..."></textarea>
+          </div>
+          <button class="form-submit">Send Message →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">O<span style="color:var(--gold)">-</span>MARKETIKS</div>
+        <p class="footer-tagline">"Your vision. Our strategy.<br/>Limitless possibilities."</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#services">Digital Marketing</a></li>
+          <li><a href="#services">Brand Identity</a></li>
+          <li><a href="#services">Web &amp; App Dev</a></li>
+          <li><a href="#services">Social Media</a></li>
+          <li><a href="#services">Events &amp; PR</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#team">Our Team</a></li>
+          <li><a href="#clients">Clients</a></li>
+          <li><a href="#events">Case Studies</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="#contact">Get In Touch</a></li>
+          <li><a href="#">Dubai, UAE</a></li>
+          <li><a href="#">hello@omarketiks.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 O-Marketiks. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#" class="social-link">in</a>
+        <a href="#" class="social-link">ig</a>
+        <a href="#" class="social-link">tw</a>
+        <a href="#" class="social-link">fb</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── CURSOR ────────────────────────────
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    document.querySelectorAll('a, button, .service-card, .team-card, .client-cell').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '18px'; cursor.style.height = '18px';
+        ring.style.width = '60px'; ring.style.height = '60px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '10px'; cursor.style.height = '10px';
+        ring.style.width = '38px'; ring.style.height = '38px';
+      });
+    });
+
+    // ── NAVBAR SCROLL ──────────────────────
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ── SCROLL REVEAL ──────────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => obs.observe(el));
+
+    // ── COUNTER ANIMATION ──────────────────
+    function animateCount(el, target, suffix = '') {
+      let start = 0;
+      const dur = 2000;
+      const step = timestamp => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    const numObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const items = e.target.querySelectorAll('.number-val');
+          items.forEach(item => {
+            const txt = item.textContent;
+            if (txt.includes('+')) {
+              const n = parseInt(txt);
+              animateCount(item, n, '+');
+            }
+          });
+          numObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.getElementById('numbers') && numObs.observe(document.getElementById('numbers'));
+
+    // ── FORM SUBMIT ────────────────────────
+    document.querySelector('.form-submit').addEventListener('click', function() {
+      this.textContent = 'Message Sent ✓';
+      this.style.background = '#2d7d46';
+      this.style.color = '#fff';
+      setTimeout(() => {
+        this.textContent = 'Send Message →';
+        this.style.background = '';
+        this.style.color = '';
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
